@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private DatabaseReference myRef;
     private Switch mReverse, mRobotOn, mFaceDetection;
     private WebView mWebview;
+    private boolean mOn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 myRef.child("robotOn").setValue(isChecked);
+                mOn = isChecked;
                 if (isChecked){
                     mFaceDetection.setChecked(false);
                 }
@@ -76,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 myRef.child("faceDetection").setValue(isChecked);
                 if (isChecked){
+                    //myRef.child("linearAcc").setValue(0);
+                    //myRef.child("lateralAcc").setValue(0);
                     mRobotOn.setChecked(false);
                 }
             }
@@ -111,14 +116,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
         float x, y;
         x = event.values[0];
-        if(x > 0 && x < 9) {
+
+        if ((x > 0 && x < 9) && (mOn)) {
             x = 1-(x/9);
         } else {
             x = 0;
         }
 
         y = event.values[1];
-        if ((y < -1 && y > -6 ) || (y > 1 && y < 6 )) {
+        if (((y < -1 && y > -6 ) || (y > 1 && y < 6 )) && (mOn)) {
             y = y;
             x = 0;
         } else {
