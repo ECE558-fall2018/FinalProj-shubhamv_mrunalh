@@ -20,6 +20,7 @@ from ws4py.server.wsgirefserver import (
     WebSocketWSGIRequestHandler,
 )
 from ws4py.server.wsgiutils import WebSocketWSGIApplication
+from video import Video
 
 ###########################################
 # CONFIGURATION
@@ -129,6 +130,7 @@ class BroadcastThread(Thread):
             self.converter.stdout.close()
 
 
+
 def main():
     print('Initializing camera')
     with picamera.PiCamera() as camera:
@@ -152,6 +154,8 @@ def main():
         print('Initializing broadcast thread')
         output = BroadcastOutput(camera)
         broadcast_thread = BroadcastThread(output.converter, websocket_server)
+        print("Initialize video object")
+        video = Video(camera, cascPath="./cascade.xml")
         print('Starting recording')
         camera.start_recording(output, 'yuv')
         try:
@@ -161,6 +165,8 @@ def main():
             http_thread.start()
             print('Starting broadcast thread')
             broadcast_thread.start()
+            print("Start video")
+            video.start()
             while True:
                 camera.wait_recording(1)
         except KeyboardInterrupt:
