@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mReverse = (Switch) findViewById(R.id.switch1);
         mRobotOn = (Switch) findViewById(R.id.switch2);
         mFaceDetection = (Switch) findViewById(R.id.switch3);
-        mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
         mRobotOn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

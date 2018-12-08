@@ -155,6 +155,9 @@ def main():
         output = BroadcastOutput(camera)
         broadcast_thread = BroadcastThread(output.converter, websocket_server)
         print("Initialize video object")
+
+        # Initialize the face detection with the camera object
+        # that is being used by the live streaming thread.
         video = Video(camera, cascPath="./cascade.xml")
         print('Starting recording')
         camera.start_recording(output, 'yuv')
@@ -165,6 +168,8 @@ def main():
             http_thread.start()
             print('Starting broadcast thread')
             broadcast_thread.start()
+
+            # Start the video thread.
             print("Start video")
             video.start()
             while True:
